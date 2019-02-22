@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Psychic Game</title>
+</head>
+<body>
+<h1>Psychic Game</h1>
+<h2>My name is Hal. I'm thinking of a letter.  What do you think it is?</h2>
+<p id="display"></p>
+    <script>
+    /*
+    1.) app randomly picks a letter -- keeps hidden
+        random number generator for the computer – stored in a var
+        1.1) create a variable that holds the letters of the alphabet
+        1.2) generate a random number between 0-25 which is going to be the index of a random letter from the alphabet array.
+        1.3) store the selected letter in a variable
+
+            1.A.) create variables to keep track of the game stats. like:
+                - user’s correct wins (correctly guessed letters)
+                - user’s losses (incorreclt guessed letters with no guesses remaining)
+                - total guesess per game, letters user has guessed during game
+
+    2.) User guesses which letter the app has chosen
+        2.1) user presses a key and key guess is displayed
+        2.2) get key pressed
+        2.3) lowercase the key
+        2.4) validate that the user presses a letter
+        2.5) Check that the user has guesses left
+
+    3.) check the users key value against the computer's selected letter
+        3.1) if correct wins go up by 1, reset all varaible except wins and losses let user know they win
+        3.2) if incorrect reduce the guess count by 1; add guessed letter to letters guessed array; let user know to try again
+       
+    4.)  user out of guesses
+        4.1) let user know they lost
+        4.2) reset all varaible except wins and losses  */
+
+    // initial game values
+        var wins = 0;
+        var losses = 0;
+        var guesses = 9;
+        var lettersGuessed = [];
+        var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+        var selectedLetter = alphabet[Math.floor(Math.random() * alphabet.length)]; // sets computer guess with random letter        
+        document.onkeyup = function(event) {             // user presses a key
+                var userGuess = event.key.toLowerCase();     // get value of key and lowercase it
+                
+                if(guesses > 0){                    // user has guesses left (with 9 decrimented to 0) then proceed
+                    if (userGuess === selectedLetter) { // user matches computer guess! 
+                        wins++                          // then wins go up by 1
+                        document.getElementById("display").innerHTML = 'You Win! total wins: ' + wins;
+                            // reset game variable except wins, losses, and alphabet array
+                            guesses = 9;
+                            lettersGuessed = [];
+                            selectedLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+                    } 
+                    else if (userGuess !== selectedLetter) {  //user guess doesn't match computer guess
+                        guesses--
+                            lettersGuessed.push(userGuess); // add letter to letters Guessed array
+                            document.getElementById("display").innerHTML = 'Incorrect Guess - Try Again!   Guesses: ' +  lettersGuessed; // let user know
+                        }
+                }
+                else {
+                    // user lost the game; losses go up
+                        losses++
+
+                    // reset game variable except wins, losses, and alphabet array
+                        guesses = 9;
+                        lettersGuessed = [];
+                        selectedLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+
+                        document.getElementById("display").innerHTML = 'Out of guesses! you lose. Play another game.  Stats: Wins: '+ wins + '   Losses: '+ losses;
+                }
+            }
+        
+        
+
+    </script>
+</body>
+</html>
